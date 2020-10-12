@@ -1,7 +1,7 @@
 --ConVar syncing
 CreateConVar("ttt2_immortal_seconds_until_respawn", "60", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
 
-hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicDefectiveCVars", function(tbl)
+hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicImmortalCVars", function(tbl)
 	tbl[ROLE_IMMORTAL] = tbl[ROLE_IMMORTAL] or {}
 	
 	--# How many seconds must pass before the immortal respawns?
@@ -16,7 +16,7 @@ hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicDefectiveCVars", function(tbl)
 	})
 end)
 
-hook.Add("TTT2SyncGlobals", "AddDefectiveGlobals", function()
+hook.Add("TTT2SyncGlobals", "AddImmortalGlobals", function()
 	SetGlobalInt("ttt2_immortal_seconds_until_respawn", GetConVar("ttt2_immortal_seconds_until_respawn"):GetInt())
 end)
 
