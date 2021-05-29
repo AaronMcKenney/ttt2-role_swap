@@ -115,7 +115,7 @@ if SERVER then
 			return
 		end
 		
-		--Don't reference the old_imm's team directly in case some other addon futzes with it for good reason.
+		local old_imm_role = old_imm:GetSubRole()
 		local old_imm_team = old_imm:GetTeam()
 		local backsies_timer_len = GetConVar("ttt2_immortal_backsies_timer"):GetInt()
 		
@@ -123,15 +123,21 @@ if SERVER then
 		old_imm.imm_last_tagged = tgt:SteamID64()
 		
 		--Give the Immortal their new role/team first so as to not accidentally end the game due to preventWin
-		--TODO: Determine if UpdateTeam and multiple SendFullStateUpdate commands really need to be here (seems excessive).
-		old_imm:SetRole(tgt:GetSubRole(), tgt:GetTeam())
-		SendFullStateUpdate()
-		old_imm:UpdateTeam(tgt:GetTeam())
-		SendFullStateUpdate()
-		--Note: Explicitly use ROLE_IMMORTAL here since that is precisely what old_imm's previous role is (otherwise this code would not execute)
-		tgt:SetRole(ROLE_IMMORTAL, old_imm_team)
-		SendFullStateUpdate()
-		tgt:UpdateTeam(old_imm_team)
+		--UpdateTeam calls are needed because SetRole overwrites the team for some reason.
+		--TODO: Determine if multiple SendFullStateUpdate commands really need to be here (seems excessive).
+		if not (DOPPELGANGER and old_imm_team == TEAM_DOPPELGANGER) then
+			old_imm:SetRole(tgt:GetSubRole(), tgt:GetTeam())
+			tgt:SetRole(old_imm_role, old_imm_team)
+			SendFullStateUpdate()
+		else
+			--Edge case: If a Dop!Immortal tags a player, they shall keep their team, but change roles.
+			--This is done because otherwise a Dop!Immortal is mechanically the same as a normal Immortal, due to preventWin making them useless.
+			--This method is more fun for the Dop.
+			old_imm:SetRole(tgt:GetSubRole(), old_imm_team)
+			
+			--Hardcode the tgt's team to TEAM_NONE, so that they are falsely lead to believe that they weren't tagged by a Doppelganger.
+			tgt:SetRole(old_imm_role, TEAM_NONE)
+		end
 		SendFullStateUpdate()
 		
 		--Now that the roles/teams have been switched, unmark any player that is registered as having tagged the previous Immortal
