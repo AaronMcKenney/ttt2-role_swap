@@ -11,4 +11,4 @@ L["ttt2_desc_" .. IMMORTAL.name] = [[You are Immortal! You cannot win, deal dama
 -- OTHER ROLE LANGUAGE STRINGS
 L["PRESS_TO_TAG_" .. IMMORTAL.name] = "Press {k} to tag!"
 L["NO_BACKSIES_" .. IMMORTAL.name] = "No backsies!"
-L["SAME_" .. IMMORTAL.name] = "Tagged player has the same role and team as you!"
+L["SAME_" .. IMMORTAL.name] = "The swap did nothing!"

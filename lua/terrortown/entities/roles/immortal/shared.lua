@@ -110,7 +110,8 @@ if SERVER then
 	
 	local function SwapRoles(old_imm, tgt)
 		--Return early if both players have the same role and team, making sure to inform the tagger so they don't think the role is broken
-		if old_imm:GetSubRole() == tgt:GetSubRole() and old_imm:GetTeam() == tgt:GetTeam() then
+		--Edge case: Break off early if a Dop!Immortal tries to swap with a regular Immortal, as nothing would happen.
+		if old_imm:GetSubRole() == tgt:GetSubRole() and (old_imm:GetTeam() == tgt:GetTeam() or (old_imm:GetTeam() == TEAM_DOPPELGANGER and tgt:GetTeam() == TEAM_NONE)) then
 			LANG.Msg(ply, "SAME_" .. IMMORTAL.name, nil, MSG_MSTACK_WARN)
 			return
 		end
