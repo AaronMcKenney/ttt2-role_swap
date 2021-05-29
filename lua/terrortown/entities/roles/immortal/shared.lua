@@ -123,12 +123,9 @@ if SERVER then
 		old_imm.imm_last_tagged = tgt:SteamID64()
 		
 		--Give the Immortal their new role/team first so as to not accidentally end the game due to preventWin
-		--UpdateTeam calls are needed because SetRole overwrites the team for some reason.
-		--TODO: Determine if multiple SendFullStateUpdate commands really need to be here (seems excessive).
 		if not (DOPPELGANGER and old_imm_team == TEAM_DOPPELGANGER) then
 			old_imm:SetRole(tgt:GetSubRole(), tgt:GetTeam())
 			tgt:SetRole(old_imm_role, old_imm_team)
-			SendFullStateUpdate()
 		else
 			--Edge case: If a Dop!Immortal tags a player, they shall keep their team, but change roles.
 			--This is done because otherwise a Dop!Immortal is mechanically the same as a normal Immortal, due to preventWin making them useless.
