@@ -12,3 +12,8 @@ L["ttt2_desc_" .. IMMORTAL.name] = [[You are Immortal! You cannot win, deal dama
 L["PRESS_TO_TAG_" .. IMMORTAL.name] = "Press {k} to tag!"
 L["NO_BACKSIES_" .. IMMORTAL.name] = "No backsies!"
 L["SAME_" .. IMMORTAL.name] = "The swap did nothing!"
+
+-- ROLE SWAP DEAGLE
+L["RECHARGED_" .. IMMORTAL.name] = "Your Sidekick Deagle has been recharged."
+L["DEAGLE_NAME_" .. IMMORTAL.name] = "RoleSwap Deagle"
+L["DEAGLE_DESC_" .. IMMORTAL.name] = "Shoot a player to swap roles with them."

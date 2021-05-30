@@ -7,6 +7,8 @@ CreateConVar("ttt2_immortal_backsies_timer", "0", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
 CreateConVar("ttt2_immortal_speed_multi", "1.2", {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 CreateConVar("ttt2_immortal_stamina_regen", "1.0", {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 CreateConVar("ttt2_immortal_stamina_drain", "0.35", {FCVAR_ARCHIVE, FCVAR_NOTIFY})
+CreateConVar("ttt2_role_swap_deagle_enable", "1", {FCVAR_ARCHIVE, FCVAR_NOTIFY})
+CreateConVar("ttt2_role_swap_deagle_refill_time", "30", {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 
 hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicImmortalCVars", function(tbl)
 	tbl[ROLE_IMMORTAL] = tbl[ROLE_IMMORTAL] or {}
@@ -93,6 +95,25 @@ hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicImmortalCVars", function(tbl)
 		decimal = 2,
 		desc = "ttt2_immortal_stamina_drain (Def: 0.35)"
 	})
+	
+	--# Should the Immortal spawn with a RoleSwap deagle, for long-range swapping?
+	--  ttt2_role_swap_deagle_enable [0/1] (default: 1)
+	table.insert(tbl[ROLE_IMMORTAL], {
+		cvar = "ttt2_role_swap_deagle_enable",
+		checkbox = true,
+		desc = "ttt2_role_swap_deagle_enable (Def: 1)"
+	})
+	
+	--# How long does it take for the RoleSwap deagle to refill its ammo (Won't refill if <= 0)?
+	--  ttt2_role_swap_deagle_refill_time [0..n] (default: 30)
+	table.insert(tbl[ROLE_IMMORTAL], {
+		cvar = "ttt2_role_swap_deagle_refill_time",
+		slider = true,
+		min = 1,
+		max = 120,
+		decimal = 0,
+		desc = "ttt2_role_swap_deagle_refill_time (Def: 30)"
+	})
 end)
 
 hook.Add("TTT2SyncGlobals", "AddImmortalGlobals", function()
@@ -104,6 +125,8 @@ hook.Add("TTT2SyncGlobals", "AddImmortalGlobals", function()
 	SetGlobalFloat("ttt2_immortal_speed_multi", GetConVar("ttt2_immortal_speed_multi"):GetFloat())
 	SetGlobalFloat("ttt2_immortal_stamina_regen", GetConVar("ttt2_immortal_stamina_regen"):GetFloat())
 	SetGlobalFloat("ttt2_immortal_stamina_drain", GetConVar("ttt2_immortal_stamina_drain"):GetFloat())
+	SetGlobalBool("ttt2_role_swap_deagle_enable", GetConVar("ttt2_role_swap_deagle_enable"):GetBool())
+	SetGlobalInt("ttt2_role_swap_deagle_refill_time", GetConVar("ttt2_role_swap_deagle_refill_time"):GetInt())
 end)
 
 cvars.AddChangeCallback("ttt2_immortal_damage_immunity", function(name, old, new)
@@ -129,4 +152,10 @@ cvars.AddChangeCallback("ttt2_immortal_stamina_regen", function(name, old, new)
 end)
 cvars.AddChangeCallback("ttt2_immortal_stamina_drain", function(name, old, new)
 	SetGlobalFloat("ttt2_immortal_stamina_drain", tonumber(new))
+end)
+cvars.AddChangeCallback("ttt2_role_swap_deagle_enable", function(name, old, new)
+	SetGlobalBool("ttt2_role_swap_deagle_enable", tobool(tonumber(new)))
+end)
+cvars.AddChangeCallback("ttt2_role_swap_deagle_refill_time", function(name, old, new)
+	SetGlobalInt("ttt2_role_swap_deagle_refill_time", tonumber(new))
 end)
