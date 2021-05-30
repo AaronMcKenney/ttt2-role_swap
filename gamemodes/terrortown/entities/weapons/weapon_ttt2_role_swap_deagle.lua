@@ -31,8 +31,8 @@ if CLIENT then
 	SWEP.Icon = "vgui/ttt/icon_role_swap_deagle.vtf"
 	SWEP.EquipMenuData = {
 		type = "item_weapon",
-		name = "DEAGLE_NAME_" .. IMMORTAL.name,
-		desc = "DEAGLE_DESC_" .. IMMORTAL.name
+		name = "DEAGLE_NAME_" .. SWAPPER.name,
+		desc = "DEAGLE_DESC_" .. SWAPPER.name
 	}
 end
 
@@ -76,7 +76,7 @@ local function RoleSwapDeagleRefilled(wep)
 		return
 	end
 	
-	local text = LANG.GetTranslation("RECHARGED_" .. IMMORTAL.name)
+	local text = LANG.GetTranslation("RECHARGED_" .. SWAPPER.name)
 	MSTACK:AddMessage(text)
 	
 	STATUS:RemoveStatus("ttt2_role_swap_deagle_reloading")
@@ -96,7 +96,7 @@ local function RoleSwapDeagleCallback(attacker, tr, dmg)
 	end
 	
 	if not IsValid(target) or not target:IsPlayer() or not target:IsTerror() or not 
-	IMM_SWAP_DATA.AttemptSwap(attacker, target, 0) then
+	SWAP_DATA.AttemptSwap(attacker, target, 0) then
 		--Miss or failed: start cooldown timer and return
 		if GetConVar("ttt2_role_swap_deagle_refill_time"):GetInt() > 0 then
 			net.Start("ttt_role_swap_deagle_miss")
