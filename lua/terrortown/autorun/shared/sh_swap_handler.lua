@@ -25,7 +25,7 @@ if SERVER then
 		--Return early if both players have the same role and team, making sure to inform the tagger so they don't think the role is broken
 		--Edge case: Break off early if a Dop!Swapper tries to swap with a regular Swapper, as nothing would happen.
 		if old_swapper:GetSubRole() == tgt:GetSubRole() and (old_swapper:GetTeam() == tgt:GetTeam() or (old_swapper:GetTeam() == TEAM_DOPPELGANGER and tgt:GetTeam() == TEAM_NONE)) then
-			LANG.Msg(ply, "SAME_" .. SWAPPER.name, nil, MSG_MSTACK_WARN)
+			LANG.Msg(old_swapper, "SAME_" .. SWAPPER.name, nil, MSG_MSTACK_WARN)
 			return false
 		end
 		
