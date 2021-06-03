@@ -67,9 +67,10 @@ if SERVER then
 	end
 	
 	hook.Add("TTT2PostPlayerDeath", "TTT2PostPlayerDeathSwapper", function(ply)
+		local respawn_delay = GetConVar("ttt2_swapper_seconds_until_respawn"):GetInt()
 		--Always attempt to revive the Swapper if they happen to die.
 		--A slight exception: If preventWin is false, then DO NOT revive the Swapper, as it would force other teams to constantly check for and kill the Swapper in order to win.
-		if ply:GetSubRole() == ROLE_SWAPPER and ply:GetSubRoleData().preventWin and not IsInSpecDM(ply) then
+		if ply:GetSubRole() == ROLE_SWAPPER and respawn_delay > 0 and ply:GetSubRoleData().preventWin and not IsInSpecDM(ply) then
 			local spawn_pos = nil
 			if GetConVar("ttt2_swapper_respawn_at_mapspawn"):GetBool() then
 				--This function will do many checks to ensure that the randomly selected spawn position is safe.
@@ -79,7 +80,7 @@ if SERVER then
 				end
 			end
 			
-			ply:Revive(GetConVar("ttt2_swapper_seconds_until_respawn"):GetInt(), --Delay
+			ply:Revive(respawn_delay, --Delay
 				nil, --OnRevive function
 				function(ply) --DoCheck function
 					--Return false (do not go through with the revival) if doing so could cause issues

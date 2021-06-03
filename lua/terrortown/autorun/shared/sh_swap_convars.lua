@@ -21,12 +21,12 @@ hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicSwapperCVars", function(tbl)
 		desc = "ttt2_swapper_damage_immunity (Def: 0)"
 	})
 	
-	--# How many seconds must pass before the swapper respawns?
+	--# How many seconds must pass before the swapper respawns (Respawning disabled if <= 0)?
 	--  ttt2_swapper_seconds_until_respawn [0..n] (default: 10)
 	table.insert(tbl[ROLE_SWAPPER], {
 		cvar = "ttt2_swapper_seconds_until_respawn",
 		slider = true,
-		min = 3,
+		min = 0,
 		max = 120,
 		decimal = 0,
 		desc = "ttt2_swapper_seconds_until_respawn (Def: 10)"

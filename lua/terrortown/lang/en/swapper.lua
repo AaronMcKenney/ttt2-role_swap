@@ -3,8 +3,8 @@ local L = LANG.GetLanguageTableReference("en")
 -- GENERAL ROLE LANGUAGE STRINGS
 L[SWAPPER.name] = "Swapper"
 L["info_popup_" .. SWAPPER.name] = [[You are a Swapper! You cannot win, deal damage, or die permanently. Swap roles by tagging someone else!]]
-L["body_found_" .. SWAPPER.abbr] = "They are a Swapper!"
-L["search_role_" .. SWAPPER.abbr] = "This person is a Swapper!"
+L["body_found_" .. SWAPPER.abbr] = "They were a Swapper!"
+L["search_role_" .. SWAPPER.abbr] = "This person was a Swapper!"
 L["target_" .. SWAPPER.name] = "Swapper"
 L["ttt2_desc_" .. SWAPPER.name] = [[You are a Swapper! You cannot win, deal damage, or die permanently. Swap roles by tagging someone else!]]
 
