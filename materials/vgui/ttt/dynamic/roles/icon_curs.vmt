@@ -1,6 +1,6 @@
 "UnlitGeneric"
 {
-	"$basetexture" "vgui/ttt/dynamic/roles/icon_swap"
+	"$basetexture" "vgui/ttt/dynamic/roles/icon_curs"
 	"$nocull" 1
 	"$nodecal" 1
 	"$nolod" 1
