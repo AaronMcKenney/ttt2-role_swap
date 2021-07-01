@@ -95,7 +95,7 @@ end
 if CLIENT then
 	hook.Add("Initialize", "InitializeCursedData", function()
 		STATUS:RegisterStatus("ttt2_curs_no_backsies", {
-			hud = Material("materials/vgui/ttt/dynamic/roles/icon_curs.vmt"),
+			hud = Material("vgui/ttt/icon_cursed_no_backsies.png"),
 			type = "good"
 		})
 	end)
