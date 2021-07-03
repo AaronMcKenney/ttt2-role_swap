@@ -28,8 +28,8 @@ function ROLE:PreInitialize()
 	self.conVarData = {
 		pct = 0.13,
 		maximum = 1,
-		minPlayers = 8,
-		random = 10,
+		minPlayers = 6,
+		random = 30,
 		traitorButton = 0,
 		
 		--Materialistic pleasures have no meaning to the cursed

@@ -1,0 +1,58 @@
+[i]Cursed to fail. Cursed to be weak. Cursed to live forever.[/i]
+ 
+You have to use [URL=https://steamcommunity.com/sharedfiles/filedetails/?id=1357204556]TTT2[/URL] in order to use this role. Additionally using [URL=https://steamcommunity.com/sharedfiles/filedetails/?id=1362430347]ULX for TTT2[/URL] is recommended. Report bugs concerning this role [URL=https://github.com/AaronMcKenney/ttt2-role_curs]here[/URL] and submit new role ideas [URL=https://github.com/TTT-2/addon-ideas]here[/URL]. A list of all currently available roles can be found [URL=https://steamcommunity.com/sharedfiles/filedetails/?id=1737053146]here[/URL].
+ 
+Discord: [url=https://discord.gg/Npcbb4W]https://discord.gg/Npcbb4W[/url]
+Source: [url=https://github.com/AaronMcKenney/ttt2-role_beac]https://github.com/AaronMcKenney/ttt2-role_curs[/url]
+ 
+ 
+[img]https://i.imgur.com/KeP4fWN.png[/img]
+ 
+The Cursed has no team and cannot win. They cannot deal damage. Death is impermanent as they will always resurrect. A player who has been afflicted must work to remove their Cursed status, which can only be done by changing roles. Two methods are provided to them: They can "tag" a different player by interacting with them, or they can shoot a different player with their RoleSwap Deagle. Both of these methods will swap roles between the two players, meaning that over time, everyones' roles will be shuffled.
+ 
+Think of it like a game of tag, if it makes you feel better.
+ 
+[img]https://i.imgur.com/jIBWtbM.png[/img]
+ 
+Convars are variables that are introduced to allow server owners to customize the gameplay without changing the code. There are always a handful of convars automatically created by TTT2, that define the spawn parameters of this role and are found in ULX. Additionally there might be some role specific convars, which have to be set in the server config file.
+ 
+[h1]Normal Role Convars (also found in ULX):[/h1]
+[code]# enable or disable this role
+  ttt_cursed_enabled [0/1] (default: 1)
+# the percentage of players that are spawned as this role
+  ttt_cursed_pct [0.0..1.0] (default: 0.13)
+# the limit of players that spawn as this role each round, this overwrites the percentage
+  ttt_cursed_max [0..n] (default: 1)
+# the probability each round of this role being spawned at all
+  ttt_cursed_random [0..100] (default: 30)
+# the amount of players needed for this role to spawn
+  ttt_cursed_min_players: [0..n] (default: 6)[/code]
+ 
+[h1]Rolespecific Convars:[/h1]
+[code]# Is the cursed immune to all forms of damage?
+  ttt2_cursed_damage_immunity [0/1] (default: 0)
+# How many seconds must pass before the cursed respawns (Respawning disabled if <= 0)?
+  ttt2_cursed_seconds_until_respawn [0..n] (default: 10)
+# When the cursed respawns, will they respawn at a randomly selected player spawn?
+  Note: If disabled, the cursed will respawn where they died.
+  ttt2_cursed_respawn_at_mapspawn [0/1] (default: 0)
+# What is the range on the cursed's tagging ability (close range role swap via interaction)?
+  ttt2_cursed_tag_dist [0..n] (default: 150)
+# How long must the cursed wait before they can tag someone who tagged them (No backsies if 0)?
+  ttt2_cursed_backsies_timer [0..n] (default: 0)
+# This multiplier applies directly to the cursed's speed (ex. 2.0 means they move twice as fast).
+  ttt2_cursed_speed_multi [0.0..n.m] (default: 1.2)
+# This multiplier applies directly to the cursed's stamina regen (ex. 2.0 means the sprint bar fills up twice the normal speed).
+  ttt2_cursed_stamina_regen [0.0..n.m] (default: 1.0)
+# This multiplier applies directly to how fast the cursed's stamina bar depletes (ex. 0.5 means the sprint bar decays at half the normal speed).
+  ttt2_cursed_stamina_drain [0.0..n.m] (default: 0.35)
+# Should the cursed spawn with a RoleSwap deagle, for long-range swapping?
+  ttt2_role_swap_deagle_enable [0/1] (default: 1)
+# How long does it take for the RoleSwap deagle to refill its ammo (Won't refill if <= 0)?
+  ttt2_role_swap_deagle_refill_time [0..n] (default: 30)[/code]
+ 
+--
+[h1]Credits:[/h1]
+[URL=https://steamcommunity.com/profiles/76561198025772353/]BlackMagicFine[/URL]: creator of this role addon
+[URL=https://steamcommunity.com/id/SmugglesTheButt/]Smuggles[/URL]: designer of the role icon
+[URL=https://steamcommunity.com/id/Zzzaaaccc13/]Wasted[/URL]: designer of the role thumbnail
