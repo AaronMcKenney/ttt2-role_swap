@@ -3,7 +3,7 @@
 You have to use [URL=https://steamcommunity.com/sharedfiles/filedetails/?id=1357204556]TTT2[/URL] in order to use this role. Additionally using [URL=https://steamcommunity.com/sharedfiles/filedetails/?id=1362430347]ULX for TTT2[/URL] is recommended. Report bugs concerning this role [URL=https://github.com/AaronMcKenney/ttt2-role_curs]here[/URL] and submit new role ideas [URL=https://github.com/TTT-2/addon-ideas]here[/URL]. A list of all currently available roles can be found [URL=https://steamcommunity.com/sharedfiles/filedetails/?id=1737053146]here[/URL].
  
 Discord: [url=https://discord.gg/Npcbb4W]https://discord.gg/Npcbb4W[/url]
-Source: [url=https://github.com/AaronMcKenney/ttt2-role_beac]https://github.com/AaronMcKenney/ttt2-role_curs[/url]
+Source: [url=https://github.com/AaronMcKenney/ttt2-role_curs]https://github.com/AaronMcKenney/ttt2-role_curs[/url]
  
  
 [img]https://i.imgur.com/KeP4fWN.png[/img]
