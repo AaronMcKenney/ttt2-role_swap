@@ -105,7 +105,7 @@ if SERVER then
 		
 		--Cursed can't deal any damage to any player.
 		--If damage_immunity is set, then the Cursed can't receive any damage either.
-		if attacker_is_cursed or (GetConVar("ttt2_cursed_damage_immunity"):GetBool() and target:GetSubRole() == ROLE_CURSED and not IsInSpecDM(target) and target:GetSubRoleData().preventWin) then
+		if attacker_is_cursed or (GetConVar("ttt2_cursed_damage_immunity"):GetBool() and target:GetSubRole() == ROLE_CURSED and not IsInSpecDM(target) and target:GetSubRoleData().preventWin) or (attacker.curs_last_tagged and target:GetSubRole() == ROLE_CURSED) then
 			dmg_info:SetDamage(0)
 		end
 	end)
