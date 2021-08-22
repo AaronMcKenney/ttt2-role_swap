@@ -66,6 +66,24 @@ if SERVER then
 		end
 	end
 	
+	hook.Add("EntityTakeDamage", "EntityTakeDamageCursed", function(target, dmg_info)
+		if not IsValid(target) or not target:IsPlayer() then
+			return
+		end
+		
+		local attacker = dmg_info:GetAttacker()
+		local attacker_is_cursed = (IsValid(attacker) and attacker:IsPlayer() and attacker:GetSubRole() == ROLE_CURSED and not IsInSpecDM(attacker))
+		
+		if attacker_is_cursed or (GetConVar("ttt2_cursed_damage_immunity"):GetBool() and target:GetSubRole() == ROLE_CURSED and not IsInSpecDM(target) and target:GetSubRoleData().preventWin) then
+			--Cursed can't deal any damage to any player.
+			--If damage_immunity is set, then the Cursed can't receive any damage either.
+			dmg_info:SetDamage(0)
+		elseif GetConVar("ttt2_cursed_no_dmg_backsies"):GetBool() and IsValid(attacker) and not IsInSpecDM(attacker) and attacker.curs_last_tagged and target:GetSubRole() == ROLE_CURSED then
+			dmg_info:SetDamage(0)
+			LANG.Msg(attacker, "NO_DMG_" .. CURSED.name, nil, MSG_MSTACK_WARN)
+		end
+	end)
+	
 	hook.Add("TTT2PostPlayerDeath", "TTT2PostPlayerDeathCursed", function(ply)
 		local respawn_delay = GetConVar("ttt2_cursed_seconds_until_respawn"):GetInt()
 		--Always attempt to revive the Cursed if they happen to die.
@@ -92,21 +110,6 @@ if SERVER then
 				spawn_pos, --The player's respawn point (If nil, will be their corpse if present, and their point of death otherwise)
 				nil --spawnEyeAngle
 			)
-		end
-	end)
-	
-	hook.Add("EntityTakeDamage", "EntityTakeDamageCursed", function(target, dmg_info)
-		if not IsValid(target) or not target:IsPlayer() then
-			return
-		end
-		
-		local attacker = dmg_info:GetAttacker()
-		local attacker_is_cursed = (IsValid(attacker) and attacker:IsPlayer() and attacker:GetSubRole() == ROLE_CURSED and not IsInSpecDM(attacker))
-		
-		--Cursed can't deal any damage to any player.
-		--If damage_immunity is set, then the Cursed can't receive any damage either.
-		if attacker_is_cursed or (GetConVar("ttt2_cursed_damage_immunity"):GetBool() and target:GetSubRole() == ROLE_CURSED and not IsInSpecDM(target) and target:GetSubRoleData().preventWin) or (attacker.curs_last_tagged and target:GetSubRole() == ROLE_CURSED) then
-			dmg_info:SetDamage(0)
 		end
 	end)
 	

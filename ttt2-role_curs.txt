@@ -8,7 +8,7 @@ Source: [url=https://github.com/AaronMcKenney/ttt2-role_curs]https://github.com/
  
 [img]https://i.imgur.com/KeP4fWN.png[/img]
  
-The Cursed has no team and cannot win. They cannot deal damage. Death is impermanent as they will always resurrect. A player who has been afflicted must work to remove their Cursed status, which can only be done by changing roles. Two methods are provided to them: They can "tag" a different player by interacting with them, or they can shoot a different player with their RoleSwap Deagle. Both of these methods will swap roles between the two players, meaning that over time, everyones' roles will be shuffled.
+The Cursed has no team and cannot win. They cannot deal damage. Death is impermanent as they will always resurrect. A player who has been afflicted must work to remove their Cursed status, which can only be done by changing roles. Two methods are provided to them: They can "tag" a different player by interacting with them, or they can shoot a different player with their RoleSwap Deagle. Both of these methods will swap roles between the two players, meaning that over time, everyones' roles will be shuffled. A former Cursed cannot be "tagged" (and may not harm the new Cursed player) until another role swap has occurred (i.e. "No backsies").
  
 Think of it like a game of tag, if it makes you feel better.
  

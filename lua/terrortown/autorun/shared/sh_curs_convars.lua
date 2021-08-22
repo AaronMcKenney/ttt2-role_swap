@@ -4,6 +4,7 @@ CreateConVar("ttt2_cursed_seconds_until_respawn", "10", {FCVAR_ARCHIVE, FCVAR_NO
 CreateConVar("ttt2_cursed_respawn_at_mapspawn", "0", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
 CreateConVar("ttt2_cursed_tag_dist", "150", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
 CreateConVar("ttt2_cursed_backsies_timer", "0", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
+CreateConVar("ttt2_cursed_no_dmg_backsies", "0", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
 CreateConVar("ttt2_cursed_speed_multi", "1.2", {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 CreateConVar("ttt2_cursed_stamina_regen", "1.0", {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 CreateConVar("ttt2_cursed_stamina_drain", "0.35", {FCVAR_ARCHIVE, FCVAR_NOTIFY})
@@ -61,6 +62,14 @@ hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicCursedCVars", function(tbl)
 		max = 60,
 		decimal = 0,
 		desc = "ttt2_cursed_backsies_timer (Def: 0)"
+	})
+	
+	--# Can a player damage Cursed players while they have "No backsies"?
+	--  ttt2_cursed_no_dmg_backsies [0/1] (default: 0)
+	table.insert(tbl[ROLE_CURSED], {
+		cvar = "ttt2_cursed_no_dmg_backsies",
+		checkbox = true,
+		desc = "ttt2_cursed_no_dmg_backsies (Def: 0)"
 	})
 	
 	--# This multiplier applies directly to the cursed's speed (ex. 2.0 means they move twice as fast).
@@ -122,6 +131,7 @@ hook.Add("TTT2SyncGlobals", "AddCursedGlobals", function()
 	SetGlobalBool("ttt2_cursed_respawn_at_mapspawn", GetConVar("ttt2_cursed_respawn_at_mapspawn"):GetBool())
 	SetGlobalInt("ttt2_cursed_tag_dist", GetConVar("ttt2_cursed_tag_dist"):GetInt())
 	SetGlobalInt("ttt2_cursed_backsies_timer", GetConVar("ttt2_cursed_backsies_timer"):GetInt())
+	SetGlobalBool("ttt2_cursed_no_dmg_backsies", GetConVar("ttt2_cursed_no_dmg_backsies"):GetBool())
 	SetGlobalFloat("ttt2_cursed_speed_multi", GetConVar("ttt2_cursed_speed_multi"):GetFloat())
 	SetGlobalFloat("ttt2_cursed_stamina_regen", GetConVar("ttt2_cursed_stamina_regen"):GetFloat())
 	SetGlobalFloat("ttt2_cursed_stamina_drain", GetConVar("ttt2_cursed_stamina_drain"):GetFloat())
@@ -143,6 +153,9 @@ cvars.AddChangeCallback("ttt2_cursed_tag_dist", function(name, old, new)
 end)
 cvars.AddChangeCallback("ttt2_cursed_backsies_timer", function(name, old, new)
 	SetGlobalInt("ttt2_cursed_backsies_timer", tonumber(new))
+end)
+cvars.AddChangeCallback("ttt2_cursed_no_dmg_backsies", function(name, old, new)
+	SetGlobalBool("ttt2_cursed_no_dmg_backsies", tobool(tonumber(new)))
 end)
 cvars.AddChangeCallback("ttt2_cursed_speed_multi", function(name, old, new)
 	SetGlobalFloat("ttt2_cursed_speed_multi", tonumber(new))
