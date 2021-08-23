@@ -2,6 +2,7 @@ if SERVER then
 	AddCSLuaFile()
 	resource.AddFile("materials/vgui/ttt/dynamic/roles/icon_curs.vmt")
 	util.AddNetworkString("TTT2CursedSendTagRequest")
+	util.AddNetworkString("TTT2CursedSelfImmolateRequest")
 end
 
 function ROLE:PreInitialize()
@@ -41,6 +42,8 @@ function ROLE:PreInitialize()
 		togglable = true
 	}
 end
+
+IMMOLATE_MODE = {NO = 0, CORPSE_ONLY = 1, WHENEVER = 2}
 
 local function IsInSpecDM(ply)
 	if SpecDM and (ply.IsGhost and ply:IsGhost()) then
@@ -90,7 +93,9 @@ if SERVER then
 		--A slight exception: If preventWin is false, then DO NOT revive the Cursed, as it would force other teams to constantly check for and kill the Cursed in order to win.
 		if ply:GetSubRole() == ROLE_CURSED and respawn_delay > 0 and ply:GetSubRoleData().preventWin and not IsInSpecDM(ply) then
 			local spawn_pos = nil
-			if GetConVar("ttt2_cursed_respawn_at_mapspawn"):GetBool() then
+			local corpse = ply:FindCorpse()
+			local mode = GetConVar("ttt2_cursed_self_immolate_mode"):GetInt()
+			if not IsValid(corpse) or corpse:IsOnFire() or GetConVar("ttt2_cursed_respawn_at_mapspawn"):GetBool() then
 				--This function will do many checks to ensure that the randomly selected spawn position is safe.
 				local spawn_entity = spawn.GetRandomPlayerSpawnEntity(ply)
 				if spawn_entity then
@@ -120,6 +125,30 @@ if SERVER then
 		local tgt = trace.Entity
 		CURS_DATA.AttemptSwap(ply, tgt, dist)
 	end)
+	
+	net.Receive("TTT2CursedSelfImmolateRequest", function(len, ply)
+		local mode = GetConVar("ttt2_cursed_self_immolate_mode"):GetInt()
+		if ply:GetSubRole() ~= ROLE_CURSED or mode == IMMOLATE_MODE.NO or (mode == IMMOLATE_MODE.CORPSE_ONLY and ply:Alive()) then
+			return
+		end
+		
+		--The following code is setup for "IgniteTarget", an internal function that the Flare Gun uses.
+		--For some reason it's not a local function. It probably should be but I won't complain.
+		local ply_or_corpse = ply
+		if not ply:Alive() then
+			ply_or_corpse = ply:FindCorpse()
+			if not IsValid(ply_or_corpse) then
+				--There is nothing to set on fire...
+				return
+			end
+		end
+		
+		local path = {Entity = ply_or_corpse}
+		local dmg_info = DamageInfo()
+		dmg_info:SetAttacker(ply)
+		dmg_info:SetInflictor(ply)
+		IgniteTarget(ply, path, dmg_info)
+	end)
 end
 
 if CLIENT then
@@ -137,12 +166,18 @@ if CLIENT then
 			end
 			
 			tData:AddDescriptionLine(LANG.GetParamTranslation("PRESS_TO_TAG_" .. CURSED.name, {k = tag_key}), CURSED.color)
+		elseif tData:GetAmountDescriptionLines() > 0 then
+			tData:AddDescriptionLine()
 		end
+		
+		--Also inform the player about the wonders of self-immolation
+		local immolate_key = string.upper(input.GetKeyName(bind.Find("CursedSelfImmolateRequest")))
+		tData:AddDescriptionLine(LANG.GetParamTranslation("ASSIST_WITH_IMMOLATION_" .. CURSED.name, {k = immolate_key}), CURSED.color)
 	end)
 	
 	local function SendTagRequest()
 		local client = LocalPlayer()
-		if IsInSpecDM(client) then
+		if client:GetSubRole() ~= ROLE_CURSED or IsInSpecDM(client) then
 			return
 		end
 		
@@ -150,6 +185,17 @@ if CLIENT then
 		net.SendToServer()
 	end
 	bind.Register("CursedSendTagRequest", SendTagRequest, nil, "Cursed", "Tag", KEY_E)
+	
+	local function SelfImmolate()
+		local client = LocalPlayer()
+		if client:GetSubRole() ~= ROLE_CURSED or IsInSpecDM(client) then
+			return
+		end
+		
+		net.Start("TTT2CursedSelfImmolateRequest")
+		net.SendToServer()
+	end
+	bind.Register("CursedSelfImmolateRequest", SelfImmolate, nil, "Cursed", "Self-Immolate", KEY_V)
 end
 
 ------------

@@ -11,6 +11,8 @@ Source: [url=https://github.com/AaronMcKenney/ttt2-role_curs]https://github.com/
 The Cursed has no team and cannot win. They cannot deal damage. Death is impermanent as they will always resurrect. A player who has been afflicted must work to remove their Cursed status, which can only be done by changing roles. Two methods are provided to them: They can "tag" a different player by interacting with them, or they can shoot a different player with their RoleSwap Deagle. Both of these methods will swap roles between the two players, meaning that over time, everyones' roles will be shuffled. A former Cursed cannot be "tagged" (and may not harm the new Cursed player) until another role swap has occurred (i.e. "No backsies").
  
 Think of it like a game of tag, if it makes you feel better.
+
+Also you can press "V" to set yourself on fire. Use this to respawn at worldspawn if you happen to die, or to set yourself on fire.
  
 [img]https://i.imgur.com/jIBWtbM.png[/img]
  
@@ -40,6 +42,13 @@ Convars are variables that are introduced to allow server owners to customize th
   ttt2_cursed_tag_dist [0..n] (default: 150)
 # How long must the cursed wait before they can tag someone who tagged them (No backsies if 0)?
   ttt2_cursed_backsies_timer [0..n] (default: 0)
+# Can a player damage Cursed players while they have "No backsies"?
+  ttt2_cursed_no_dmg_backsies [0/1] (default: 0)
+# How should the Cursed's Self-Immolate ability work?
+  ttt2_cursed_self_immolate_mode [0..2] (default: 2)
+  # 0: Cursed cannot self-immolate
+  # 1: Cursed can only set their corpse on fire
+  # 2: Cursed can self-immolate when alive or dead
 # This multiplier applies directly to the cursed's speed (ex. 2.0 means they move twice as fast).
   ttt2_cursed_speed_multi [0.0..n.m] (default: 1.2)
 # This multiplier applies directly to the cursed's stamina regen (ex. 2.0 means the sprint bar fills up twice the normal speed).

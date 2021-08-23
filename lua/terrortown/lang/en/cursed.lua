@@ -17,6 +17,7 @@ L["PRESS_TO_TAG_" .. CURSED.name] = "Press {k} to swap roles!"
 L["NO_BACKSIES_" .. CURSED.name] = "No backsies!"
 L["SAME_" .. CURSED.name] = "The swap did nothing!"
 L["NO_DMG_" .. CURSED.name] = "Can't damage Cursed players right now."
+L["ASSIST_WITH_IMMOLATION_" .. CURSED.name] = "Press {k} to self-immolate..."
 
 -- ROLE SWAP DEAGLE
 L["RECHARGED_" .. CURSED.name] = "Your RoleSwap Deagle has been recharged."

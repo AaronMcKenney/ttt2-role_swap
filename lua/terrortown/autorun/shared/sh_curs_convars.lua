@@ -5,6 +5,7 @@ CreateConVar("ttt2_cursed_respawn_at_mapspawn", "0", {FCVAR_ARCHIVE, FCVAR_NOTFI
 CreateConVar("ttt2_cursed_tag_dist", "150", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
 CreateConVar("ttt2_cursed_backsies_timer", "0", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
 CreateConVar("ttt2_cursed_no_dmg_backsies", "0", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
+CreateConVar("ttt2_cursed_self_immolate_mode", "2", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
 CreateConVar("ttt2_cursed_speed_multi", "1.2", {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 CreateConVar("ttt2_cursed_stamina_regen", "1.0", {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 CreateConVar("ttt2_cursed_stamina_drain", "0.35", {FCVAR_ARCHIVE, FCVAR_NOTIFY})
@@ -72,6 +73,23 @@ hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicCursedCVars", function(tbl)
 		desc = "ttt2_cursed_no_dmg_backsies (Def: 0)"
 	})
 	
+	--# How should the Cursed's Self-Immolate ability work?
+	--  ttt2_cursed_self_immolate_mode [0..2] (default: 2)
+	--  # 0: Cursed cannot self-immolate
+	--  # 1: Cursed can only set their corpse on fire
+	--  # 2: Cursed can self-immolate when alive or dead
+	table.insert(tbl[ROLE_CURSED], {
+		cvar = "ttt2_cursed_self_immolate_mode",
+		combobox = true,
+		desc = "ttt2_cursed_self_immolate_mode (Def: 2)",
+		choices = {
+			"0 - Cursed cannot self-immolate",
+			"1 - Cursed can only set their corpse on fire",
+			"2 - Cursed can self-immolate when alive or dead"
+		},
+		numStart = 0
+	})
+	
 	--# This multiplier applies directly to the cursed's speed (ex. 2.0 means they move twice as fast).
 	--  ttt2_cursed_speed_multi [0.0..n.m] (default: 1.2)
 	table.insert(tbl[ROLE_CURSED], {
@@ -132,6 +150,7 @@ hook.Add("TTT2SyncGlobals", "AddCursedGlobals", function()
 	SetGlobalInt("ttt2_cursed_tag_dist", GetConVar("ttt2_cursed_tag_dist"):GetInt())
 	SetGlobalInt("ttt2_cursed_backsies_timer", GetConVar("ttt2_cursed_backsies_timer"):GetInt())
 	SetGlobalBool("ttt2_cursed_no_dmg_backsies", GetConVar("ttt2_cursed_no_dmg_backsies"):GetBool())
+	SetGlobalInt("ttt2_cursed_self_immolate_mode", GetConVar("ttt2_cursed_self_immolate_mode"):GetInt())
 	SetGlobalFloat("ttt2_cursed_speed_multi", GetConVar("ttt2_cursed_speed_multi"):GetFloat())
 	SetGlobalFloat("ttt2_cursed_stamina_regen", GetConVar("ttt2_cursed_stamina_regen"):GetFloat())
 	SetGlobalFloat("ttt2_cursed_stamina_drain", GetConVar("ttt2_cursed_stamina_drain"):GetFloat())
@@ -156,6 +175,9 @@ cvars.AddChangeCallback("ttt2_cursed_backsies_timer", function(name, old, new)
 end)
 cvars.AddChangeCallback("ttt2_cursed_no_dmg_backsies", function(name, old, new)
 	SetGlobalBool("ttt2_cursed_no_dmg_backsies", tobool(tonumber(new)))
+end)
+cvars.AddChangeCallback("ttt2_cursed_self_immolate_mode", function(name, old, new)
+	SetGlobalInt("ttt2_cursed_self_immolate_mode", tonumber(new))
 end)
 cvars.AddChangeCallback("ttt2_cursed_speed_multi", function(name, old, new)
 	SetGlobalFloat("ttt2_cursed_speed_multi", tonumber(new))
