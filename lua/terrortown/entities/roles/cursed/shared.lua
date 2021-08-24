@@ -3,6 +3,7 @@ if SERVER then
 	resource.AddFile("materials/vgui/ttt/dynamic/roles/icon_curs.vmt")
 	util.AddNetworkString("TTT2CursedSendTagRequest")
 	util.AddNetworkString("TTT2CursedSelfImmolateRequest")
+	util.AddNetworkString("TTT2CursedSelfImmolateResponse")
 end
 
 function ROLE:PreInitialize()
@@ -148,6 +149,18 @@ if SERVER then
 				--There is nothing to set on fire...
 				return
 			end
+			
+			if ply_or_corpse:WaterLevel() > 0 then
+				--Setting the corpse on fire would do nothing, as the fire would put itself out immediately.
+				--Instead remove the corpse with a puff of smoke.
+				net.Start("TTT2CursedSelfImmolateResponse")
+				net.WriteVector(ply_or_corpse:GetPos())
+				net.Broadcast()
+				
+				ply_or_corpse:Remove()
+				
+				return
+			end
 		end
 		
 		local path = {Entity = ply_or_corpse}
@@ -159,6 +172,12 @@ if SERVER then
 end
 
 if CLIENT then
+	--Model constants used for smoke generation effect
+	local smokeparticles = {
+		Model("particle/particle_smokegrenade"),
+		Model("particle/particle_noisesphere")
+	}
+	
 	hook.Add("TTTRenderEntityInfo", "TTTRenderEntityInfoCursed", function(tData)
 		local client = LocalPlayer()
 		local ent = tData:GetEntity()
@@ -207,6 +226,45 @@ if CLIENT then
 		net.SendToServer()
 	end
 	bind.Register("CursedSelfImmolateRequest", SelfImmolate, nil, "Cursed", "Self-Immolate", KEY_V)
+	
+	net.Receive("TTT2CursedSelfImmolateResponse", function()
+		local pos = net.ReadVector()
+
+		--Smoke spawn code by Alf21 (Taken from Pharaoh role)
+		local em = ParticleEmitter(pos)
+		local r = 1.5 * 64
+
+		for i = 1, 75 do
+			local prpos = VectorRand() * r
+			prpos.z = prpos.z + 332
+			prpos.z = math.min(prpos.z, 52)
+
+			local p = em:Add(table.Random(smokeparticles), pos + prpos)
+			if p then
+				local gray = math.random(125, 255)
+				p:SetColor(gray, gray, gray)
+				p:SetStartAlpha(200)
+				p:SetEndAlpha(0)
+				p:SetVelocity(VectorRand() * math.Rand(900, 1300))
+				p:SetLifeTime(0)
+
+				p:SetDieTime(3)
+
+				p:SetStartSize(math.random(140, 150))
+				p:SetEndSize(math.random(1, 40))
+				p:SetRoll(math.random(-180, 180))
+				p:SetRollDelta(math.Rand(-0.1, 0.1))
+				p:SetAirResistance(600)
+
+				p:SetCollide(true)
+				p:SetBounce(0.4)
+
+				p:SetLighting(false)
+			end
+		end
+
+		em:Finish()
+	end)
 end
 
 ------------
