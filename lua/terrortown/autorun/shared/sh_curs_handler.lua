@@ -77,6 +77,8 @@ if SERVER then
 		
 		if CURS_DATA.CanSwapRoles(ply, tgt, dist) then
 			did_swap = CURS_DATA.SwapRoles(ply, tgt)
+		elseif tgt.curs_last_tagged and tgt.curs_last_tagged < 0 then
+			LANG.Msg(ply, "PROT_" .. CURSED.name, {name = tgt:GetName()}, MSG_MSTACK_WARN)
 		elseif tgt.curs_last_tagged ~= nil then
 			LANG.Msg(ply, "NO_BACKSIES_" .. CURSED.name, nil, MSG_MSTACK_WARN)
 		end
@@ -84,12 +86,14 @@ if SERVER then
 		return did_swap
 	end
 	
-	hook.Add("TTTEndRound", "TTTEndRoundCursedData", function()
+	local function ResetAllCursedDataForServer()
 		for _, ply in ipairs(player.GetAll()) do
 			ply.curs_last_tagged = nil
 			STATUS:RemoveStatus(ply, "ttt2_curs_no_backsies")
 		end
-	end)
+	end
+	hook.Add("TTTEndRound", "ResetCursedForServerOnEndRound", ResetAllCursedDataForServer)
+	hook.Add("TTTBeginRound", "ResetCursedForServerOnBeginRound", ResetAllCursedDataForServer)
 end
 
 if CLIENT then

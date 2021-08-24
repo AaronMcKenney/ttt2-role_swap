@@ -16,6 +16,7 @@ Swap roles by interacting with a player up close, or by shooting them with the R
 L["PRESS_TO_TAG_" .. CURSED.name] = "Press {k} to swap roles!"
 L["NO_BACKSIES_" .. CURSED.name] = "No backsies!"
 L["SAME_" .. CURSED.name] = "The swap did nothing!"
+L["PROT_" .. CURSED.name] = "{name} is protected from curses!"
 L["NO_DMG_" .. CURSED.name] = "Can't damage Cursed players right now."
 L["ASSIST_WITH_IMMOLATION_" .. CURSED.name] = "Press {k} to self-immolate..."
 

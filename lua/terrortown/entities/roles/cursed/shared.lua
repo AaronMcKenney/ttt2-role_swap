@@ -12,9 +12,16 @@ function ROLE:PreInitialize()
 	self.fallbackTable = {}
 	self.unknownTeam = true --Disables team chat (among other things)
 	
-	--Scores have no meaning to the cursed
-	self.scoreKillsMultiplier = 0
-	self.scoreTeamKillsMultiplier = 0
+	--Scores have no meaning to the cursed (especially suicides).
+	--Exception is bodyFoundMuliplier, as that is important for progressing the game for everyone.
+	self.score.teamKillsMultiplier = 0
+	self.score.killsMultiplier = 0
+	self.score.bodyFoundMuliplier = 1
+	self.score.surviveBonusMultiplier = 0
+	self.score.aliveTeammatesBonusMultiplier = 0
+	self.score.allSurviveBonusMultiplier = 0
+	self.score.timelimitMultiplier = 0
+	self.score.suicideMultiplier = 0
 	
 	--Materialistic pleasures have no meaning to the cursed
 	self.preventFindCredits = true
@@ -155,6 +162,10 @@ if CLIENT then
 	hook.Add("TTTRenderEntityInfo", "TTTRenderEntityInfoCursed", function(tData)
 		local client = LocalPlayer()
 		local ent = tData:GetEntity()
+		
+		if client:GetSubRole() ~= ROLE_CURSED or IsInSpecDM(client) then
+			return
+		end
 		
 		--If the player can tag the player they're looking at, inform them by putting a notification
 		--on the body. Also tell them which key they need to press.
