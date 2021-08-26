@@ -77,10 +77,12 @@ if SERVER then
 		
 		if CURS_DATA.CanSwapRoles(ply, tgt, dist) then
 			did_swap = CURS_DATA.SwapRoles(ply, tgt)
-		elseif tgt.curs_last_tagged and tgt.curs_last_tagged < 0 then
-			LANG.Msg(ply, "PROT_" .. CURSED.name, {name = tgt:GetName()}, MSG_MSTACK_WARN)
 		elseif tgt.curs_last_tagged ~= nil then
-			LANG.Msg(ply, "NO_BACKSIES_" .. CURSED.name, nil, MSG_MSTACK_WARN)
+			if tgt.curs_last_tagged == ply:SteamID64() then
+				LANG.Msg(ply, "NO_BACKSIES_" .. CURSED.name, nil, MSG_MSTACK_WARN)
+			else
+				LANG.Msg(ply, "PROT_" .. CURSED.name, {name = tgt:GetName()}, MSG_MSTACK_WARN)
+			end
 		end
 		
 		return did_swap
