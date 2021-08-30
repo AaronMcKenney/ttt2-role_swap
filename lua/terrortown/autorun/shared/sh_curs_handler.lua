@@ -13,11 +13,19 @@ local function IsInSpecDM(ply)
 end
 
 function CURS_DATA.CanSwapRoles(ply, tgt, dist)
-	if GetRoundState() == ROUND_ACTIVE and IsValid(ply) and ply:IsPlayer() and ply:Alive() and not IsInSpecDM(ply) and ply:GetSubRole() == ROLE_CURSED and IsValid(tgt) and tgt:IsPlayer() and tgt:Alive() and not IsInSpecDM(tgt) and tgt.curs_last_tagged == nil and dist <= GetConVar("ttt2_cursed_tag_dist"):GetInt() then
-		return true
-	else
+	local ply_is_valid = IsValid(ply) and ply:IsPlayer() and ply:Alive() and not IsInSpecDM(ply) and ply:GetSubRole() == ROLE_CURSED
+	local tgt_is_valid = IsValid(tgt) and tgt:IsPlayer() and tgt:Alive() and not IsInSpecDM(tgt) and tgt.curs_last_tagged == nil
+	local det_allowed = GetConVar("ttt2_cursed_affect_det"):GetBool()
+	
+	if GetRoundState() ~= ROUND_ACTIVE or not ply_is_valid or not tgt_is_valid or dist > GetConVar("ttt2_cursed_tag_dist"):GetInt() then
 		return false
 	end
+	
+	if not det_allowed and (tgt:GetBaseRole() == ROLE_DETECTIVE or tgt:GetSubRole() == ROLE_DEFECTIVE) then
+		return false
+	end
+	
+	return true
 end
 
 if SERVER then
@@ -74,6 +82,7 @@ if SERVER then
 
 	function CURS_DATA.AttemptSwap(ply, tgt, dist)
 		local did_swap = false
+		local det_allowed = GetConVar("ttt2_cursed_affect_det"):GetBool()
 		
 		if CURS_DATA.CanSwapRoles(ply, tgt, dist) then
 			did_swap = CURS_DATA.SwapRoles(ply, tgt)
@@ -83,6 +92,8 @@ if SERVER then
 			else
 				LANG.Msg(ply, "PROT_" .. CURSED.name, {name = tgt:GetName()}, MSG_MSTACK_WARN)
 			end
+		elseif not det_allowed and IsValid(tgt) and tgt:IsPlayer() and tgt:Alive() and not IsInSpecDM(tgt) and (tgt:GetBaseRole() == ROLE_DETECTIVE or tgt:GetSubRole() == ROLE_DEFECTIVE) then
+			LANG.Msg(ply, "NO_DET_" .. CURSED.name, nil, MSG_MSTACK_WARN)
 		end
 		
 		return did_swap

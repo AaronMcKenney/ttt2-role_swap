@@ -31,16 +31,18 @@ Convars are variables that are introduced to allow server owners to customize th
   ttt_cursed_min_players: [0..n] (default: 6)[/code]
  
 [h1]Rolespecific Convars:[/h1]
-[code]# Is the cursed immune to all forms of damage?
+[code]# Can the Cursed swap roles with Detectives?
+  ttt2_cursed_affect_det [0/1] (default: 1)
+# Is the Cursed immune to all forms of damage?
   ttt2_cursed_damage_immunity [0/1] (default: 0)
-# How many seconds must pass before the cursed respawns (Respawning disabled if <= 0)?
+# How many seconds must pass before the Cursed respawns (Respawning disabled if <= 0)?
   ttt2_cursed_seconds_until_respawn [0..n] (default: 10)
-# When the cursed respawns, will they respawn at a randomly selected player spawn?
-  Note: If disabled, the cursed will respawn where they died.
+# When the Cursed respawns, will they respawn at a randomly selected player spawn?
+  Note: If disabled, the Cursed will respawn where they died.
   ttt2_cursed_respawn_at_mapspawn [0/1] (default: 0)
-# What is the range on the cursed's tagging ability (close range role swap via interaction)?
+# What is the range on the Cursed's tagging ability (close range role swap via interaction)?
   ttt2_cursed_tag_dist [0..n] (default: 150)
-# How long must the cursed wait before they can tag someone who tagged them (No backsies if 0)?
+# How long must the Cursed wait before they can tag someone who tagged them (No backsies if 0)?
   ttt2_cursed_backsies_timer [0..n] (default: 0)
 # Can a player damage Cursed players while they have "No backsies"?
   ttt2_cursed_no_dmg_backsies [0/1] (default: 0)
@@ -49,13 +51,13 @@ Convars are variables that are introduced to allow server owners to customize th
   # 0: Cursed cannot self-immolate
   # 1: Cursed can only set their corpse on fire
   # 2: Cursed can self-immolate when alive or dead
-# This multiplier applies directly to the cursed's speed (ex. 2.0 means they move twice as fast).
+# This multiplier applies directly to the Cursed's speed (ex. 2.0 means they move twice as fast).
   ttt2_cursed_speed_multi [0.0..n.m] (default: 1.2)
-# This multiplier applies directly to the cursed's stamina regen (ex. 2.0 means the sprint bar fills up twice the normal speed).
+# This multiplier applies directly to the Cursed's stamina regen (ex. 2.0 means the sprint bar fills up twice the normal speed).
   ttt2_cursed_stamina_regen [0.0..n.m] (default: 1.0)
-# This multiplier applies directly to how fast the cursed's stamina bar depletes (ex. 0.5 means the sprint bar decays at half the normal speed).
+# This multiplier applies directly to how fast the Cursed's stamina bar depletes (ex. 0.5 means the sprint bar decays at half the normal speed).
   ttt2_cursed_stamina_drain [0.0..n.m] (default: 0.35)
-# Should the cursed spawn with a RoleSwap deagle, for long-range swapping?
+# Should the Cursed spawn with a RoleSwap deagle, for long-range swapping?
   ttt2_role_swap_deagle_enable [0/1] (default: 1)
 # How long does it take for the RoleSwap deagle to refill its ammo (Won't refill if <= 0)?
   ttt2_role_swap_deagle_refill_time [0..n] (default: 30)[/code]

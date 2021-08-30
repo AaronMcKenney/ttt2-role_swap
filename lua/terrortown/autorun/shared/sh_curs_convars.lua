@@ -1,4 +1,5 @@
 --ConVar syncing
+CreateConVar("ttt2_cursed_affect_det", "1", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
 CreateConVar("ttt2_cursed_damage_immunity", "0", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
 CreateConVar("ttt2_cursed_seconds_until_respawn", "10", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
 CreateConVar("ttt2_cursed_respawn_at_mapspawn", "0", {FCVAR_ARCHIVE, FCVAR_NOTFIY})
@@ -14,6 +15,14 @@ CreateConVar("ttt2_role_swap_deagle_refill_time", "30", {FCVAR_ARCHIVE, FCVAR_NO
 
 hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicCursedCVars", function(tbl)
 	tbl[ROLE_CURSED] = tbl[ROLE_CURSED] or {}
+	
+	--# Can the Cursed swap roles with Detectives?
+	--  ttt2_cursed_affect_det [0/1] (default: 1)
+	table.insert(tbl[ROLE_CURSED], {
+		cvar = "ttt2_cursed_affect_det",
+		checkbox = true,
+		desc = "ttt2_cursed_affect_det (Def: 1)"
+	})
 	
 	--# Is the cursed immune to all forms of damage?
 	--  ttt2_cursed_damage_immunity [0/1] (default: 0)
@@ -144,6 +153,7 @@ hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicCursedCVars", function(tbl)
 end)
 
 hook.Add("TTT2SyncGlobals", "AddCursedGlobals", function()
+	SetGlobalBool("ttt2_cursed_affect_det", GetConVar("ttt2_cursed_affect_det"):GetBool())
 	SetGlobalBool("ttt2_cursed_damage_immunity", GetConVar("ttt2_cursed_damage_immunity"):GetBool())
 	SetGlobalInt("ttt2_cursed_seconds_until_respawn", GetConVar("ttt2_cursed_seconds_until_respawn"):GetInt())
 	SetGlobalBool("ttt2_cursed_respawn_at_mapspawn", GetConVar("ttt2_cursed_respawn_at_mapspawn"):GetBool())
@@ -158,6 +168,9 @@ hook.Add("TTT2SyncGlobals", "AddCursedGlobals", function()
 	SetGlobalInt("ttt2_role_swap_deagle_refill_time", GetConVar("ttt2_role_swap_deagle_refill_time"):GetInt())
 end)
 
+cvars.AddChangeCallback("ttt2_cursed_affect_det", function(name, old, new)
+	SetGlobalBool("ttt2_cursed_affect_det", tobool(tonumber(new)))
+end)
 cvars.AddChangeCallback("ttt2_cursed_damage_immunity", function(name, old, new)
 	SetGlobalBool("ttt2_cursed_damage_immunity", tobool(tonumber(new)))
 end)
