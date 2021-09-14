@@ -14,6 +14,8 @@ Think of it like a game of tag, if it makes you feel better.
 
 Also you can press "V" to set yourself on fire. Use this to respawn at worldspawn if you happen to die, or to set yourself on fire.
  
+I also created two items that involve this role: [URL=https://steamcommunity.com/sharedfiles/filedetails/?id=2588987999]Countercurse Mantra[/URL] and [URL=https://steamcommunity.com/sharedfiles/filedetails/?id=2588990281]Cursed Deagle[/URL].
+ 
 [img]https://i.imgur.com/jIBWtbM.png[/img]
  
 Convars are variables that are introduced to allow server owners to customize the gameplay without changing the code. There are always a handful of convars automatically created by TTT2, that define the spawn parameters of this role and are found in ULX. Additionally there might be some role specific convars, which have to be set in the server config file.

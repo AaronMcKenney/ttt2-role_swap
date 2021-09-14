@@ -101,9 +101,8 @@ if SERVER then
 		--A slight exception: If preventWin is false, then DO NOT revive the Cursed, as it would force other teams to constantly check for and kill the Cursed in order to win.
 		if ply:GetSubRole() == ROLE_CURSED and respawn_delay > 0 and ply:GetSubRoleData().preventWin and not IsInSpecDM(ply) then
 			local spawn_pos = nil
-			local corpse = ply:FindCorpse()
 			local mode = GetConVar("ttt2_cursed_self_immolate_mode"):GetInt()
-			if not IsValid(corpse) or corpse:IsOnFire() or GetConVar("ttt2_cursed_respawn_at_mapspawn"):GetBool() then
+			if GetConVar("ttt2_cursed_respawn_at_mapspawn"):GetBool() then
 				--This function will do many checks to ensure that the randomly selected spawn position is safe.
 				local spawn_entity = spawn.GetRandomPlayerSpawnEntity(ply)
 				if spawn_entity then
@@ -136,7 +135,7 @@ if SERVER then
 	
 	net.Receive("TTT2CursedSelfImmolateRequest", function(len, ply)
 		local mode = GetConVar("ttt2_cursed_self_immolate_mode"):GetInt()
-		if ply:GetSubRole() ~= ROLE_CURSED or mode == IMMOLATE_MODE.NO or (mode == IMMOLATE_MODE.CORPSE_ONLY and ply:Alive()) then
+		if ply:GetSubRole() ~= ROLE_CURSED or mode == IMMOLATE_MODE.NO or (mode == IMMOLATE_MODE.CORPSE_ONLY and ply:Alive()) or IsInSpecDM(ply) then
 			return
 		end
 		
@@ -157,9 +156,31 @@ if SERVER then
 				net.WriteVector(ply_or_corpse:GetPos())
 				net.Broadcast()
 				
+				--Force random world spawn location to be used for revival
 				ply_or_corpse:Remove()
+				ply:SetLastDeathPosition(nil)
 				
 				return
+			end
+			
+			local time_until_respawn = 0
+			if timer.Exists("TTT2RevivePlayer" .. ply:EntIndex()) then
+				time_until_respawn = timer.TimeLeft("TTT2RevivePlayer" .. ply:EntIndex())
+			end
+			if time_until_respawn > 1 then
+				--Corpse may not be removed before respawn is triggered. Force its removal shortly before they revive.
+				timer.Simple(time_until_respawn - 0.5, function()
+					if IsValid(ply_or_corpse) and IsValid(ply) and not ply:Alive() and not IsInSpecDM(ply) then
+						--Remove the corpse in a puff of smoke.
+						net.Start("TTT2CursedSelfImmolateResponse")
+						net.WriteVector(ply_or_corpse:GetPos())
+						net.Broadcast()
+						
+						--Force random world spawn location to be used for revival
+						ply_or_corpse:Remove()
+						ply:SetLastDeathPosition(nil)
+					end
+				end)
 			end
 		end
 		
