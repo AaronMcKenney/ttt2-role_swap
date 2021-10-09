@@ -190,6 +190,12 @@ if SERVER then
 		dmg_info:SetInflictor(ply)
 		IgniteTarget(ply, path, dmg_info)
 	end)
+	
+	hook.Add("TTT2PharaohPreventDamageToAnkh", "TTT2PharaohPreventDamageToAnkhCursed", function(attacker)
+		if attacker:GetSubRole() == ROLE_CURSED then
+			return true
+		end
+	end)
 end
 
 if CLIENT then
