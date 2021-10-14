@@ -19,6 +19,7 @@ function ROLE:PreInitialize()
 	self.score.killsMultiplier = 0
 	self.score.bodyFoundMuliplier = 1
 	self.score.surviveBonusMultiplier = 0
+	self.score.survivePenaltyMultiplier = 0
 	self.score.aliveTeammatesBonusMultiplier = 0
 	self.score.allSurviveBonusMultiplier = 0
 	self.score.timelimitMultiplier = 0
@@ -26,8 +27,6 @@ function ROLE:PreInitialize()
 	
 	--Materialistic pleasures have no meaning to the cursed
 	self.preventFindCredits = true
-	self.preventKillCredits = true
-	self.preventTraitorAloneCredits = true
 	
 	--Winning, losing, and kinship among others have no meaning to the cursed
 	self.defaultTeam = TEAM_NONE
@@ -43,8 +42,8 @@ function ROLE:PreInitialize()
 		
 		--Materialistic pleasures have no meaning to the cursed
 		credits = 0,
-		creditsTraitorKill = 0,
-		creditsTraitorDead = 0,
+		creditsAwardDeadEnable = 0,
+		creditsAwardKillEnable = 0,
 		shopFallback = SHOP_DISABLED,
 		
 		togglable = true
@@ -101,12 +100,14 @@ if SERVER then
 		--A slight exception: If preventWin is false, then DO NOT revive the Cursed, as it would force other teams to constantly check for and kill the Cursed in order to win.
 		if ply:GetSubRole() == ROLE_CURSED and respawn_delay > 0 and ply:GetSubRoleData().preventWin and not IsInSpecDM(ply) then
 			local spawn_pos = nil
+			local spawn_eye_ang = nil
 			local mode = GetConVar("ttt2_cursed_self_immolate_mode"):GetInt()
 			if GetConVar("ttt2_cursed_respawn_at_mapspawn"):GetBool() then
 				--This function will do many checks to ensure that the randomly selected spawn position is safe.
-				local spawn_entity = spawn.GetRandomPlayerSpawnEntity(ply)
-				if spawn_entity then
-					spawn_pos = spawn_entity:GetPos()
+				local spawn_point = plyspawn.GetRandomSafePlayerSpawnPoint(ply)
+				if spawn_point then
+					spawn_pos = spawn_point.pos
+					spawn_eye_ang = spawn_point.ang
 				end
 			end
 			
@@ -120,7 +121,7 @@ if SERVER then
 				false, --blocksRound (Prevents anyone from winning during respawn delay)
 				nil, --OnFail function
 				spawn_pos, --The player's respawn point (If nil, will be their corpse if present, and their point of death otherwise)
-				nil --spawnEyeAngle
+				spawn_eye_ang --spawnEyeAngle
 			)
 		end
 	end)
