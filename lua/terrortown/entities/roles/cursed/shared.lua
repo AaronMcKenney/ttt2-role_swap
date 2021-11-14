@@ -50,8 +50,6 @@ function ROLE:PreInitialize()
 	}
 end
 
-IMMOLATE_MODE = {NO = 0, CORPSE_ONLY = 1, WHENEVER = 2}
-
 local function IsInSpecDM(ply)
 	if SpecDM and (ply.IsGhost and ply:IsGhost()) then
 		return true
@@ -61,6 +59,8 @@ local function IsInSpecDM(ply)
 end
 
 if SERVER then
+	local IMMOLATE_MODE = {NO = 0, CORPSE_ONLY = 1, WHENEVER = 2}
+	
 	function ROLE:GiveRoleLoadout(ply, isRoleChange)
 		if GetConVar("ttt2_role_swap_deagle_enable"):GetBool() then
 			ply:GiveEquipmentWeapon("weapon_ttt2_role_swap_deagle")
@@ -101,7 +101,6 @@ if SERVER then
 		if ply:GetSubRole() == ROLE_CURSED and respawn_delay > 0 and ply:GetSubRoleData().preventWin and not IsInSpecDM(ply) then
 			local spawn_pos = nil
 			local spawn_eye_ang = nil
-			local mode = GetConVar("ttt2_cursed_self_immolate_mode"):GetInt()
 			if GetConVar("ttt2_cursed_respawn_at_mapspawn"):GetBool() then
 				--This function will do many checks to ensure that the randomly selected spawn position is safe.
 				local spawn_point = plyspawn.GetRandomSafePlayerSpawnPoint(ply)
