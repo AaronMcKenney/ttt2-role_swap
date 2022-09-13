@@ -29,29 +29,40 @@ function CURS_DATA.CanSwapRoles(ply, tgt, dist)
 end
 
 if SERVER then
-	function CURS_DATA.SwapRoles(old_cursed, tgt)
-		--Return early if both players have the same role and team, making sure to inform the tagger so they don't think the role is broken
-		--Edge case: Break off early if a Dop!Cursed tries to swap with a regular Cursed, as a Dop!Cursed can't lose their team.
-		if old_cursed:GetSubRole() == tgt:GetSubRole() and (old_cursed:GetTeam() == tgt:GetTeam() or (old_cursed:GetTeam() == TEAM_DOPPELGANGER and tgt:GetTeam() == TEAM_NONE)) then
-			LANG.Msg(old_cursed, "SAME_" .. CURSED.name, nil, MSG_MSTACK_WARN)
-			return false
+	local function IsStickyTeam(team)
+		--A hack. True if the supported team is not to be altered for balancing reasons.
+		if (DOPPELGANGER and team == TEAM_DOPPELGANGER) or (COPYCAT and team == TEAM_COPYCAT) then
+			return true
 		end
 		
+		return false
+	end
+	
+	function CURS_DATA.SwapRoles(old_cursed, tgt)
 		local old_cursed_role = old_cursed:GetSubRole()
 		local old_cursed_team = old_cursed:GetTeam()
 		local backsies_timer_len = GetConVar("ttt2_cursed_backsies_timer"):GetInt()
+		
+		--Return early if both players have the same role and team, making sure to inform the tagger so they don't think the role is broken
+		--Edge case: Break off early if a Dop!Cursed tries to swap with a regular Cursed, as a Dop!Cursed can't lose their team.
+		--  In general, a player with a "sticky team" should not swap teams with another.
+		if old_cursed_role == tgt:GetSubRole() and (old_cursed_team == tgt:GetTeam() or IsStickyTeam(old_cursed_team) or IsStickyTeam(tgt:GetTeam())) then
+			LANG.Msg(old_cursed, "SAME_" .. CURSED.name, nil, MSG_MSTACK_WARN)
+			return false
+		end
 		
 		--Immediately mark the Cursed with no backsies to prevent a counterswap.
 		old_cursed.curs_last_tagged = tgt:SteamID64()
 		
 		--Give the Cursed their new role/team first so as to not accidentally end the game due to preventWin
-		if not (DOPPELGANGER and old_cursed_team == TEAM_DOPPELGANGER) then
+		if not IsStickyTeam(old_cursed_team) then
 			old_cursed:SetRole(tgt:GetSubRole(), tgt:GetTeam())
 			tgt:SetRole(old_cursed_role, old_cursed_team)
 		else
 			--Edge case: If a Dop!Cursed tags a player, they shall keep their team, but change roles.
 			--This is done because otherwise a Dop!Cursed is mechanically the same as a normal Cursed, due to preventWin making them useless.
 			--This method is more fun for the Dop.
+			--The same logic applies for Copy!Cursed, who otherwise would effectively remove the Copycat role from the game upon using the Cursed's role swap ability.
 			old_cursed:SetRole(tgt:GetSubRole(), old_cursed_team)
 			
 			--Hardcode the tgt's team to TEAM_NONE, so that they are falsely lead to believe that they weren't tagged by a Doppelganger.
