@@ -292,6 +292,110 @@ if CLIENT then
 
 		em:Finish()
 	end)
+
+	-------------
+	-- CONVARS --
+	-------------
+	function ROLE:AddToSettingsMenu(parent)
+		local form = vgui.CreateTTT2Form(parent, "header_roles_additional")
+
+		form:MakeCheckBox({
+			serverConvar = "ttt2_cursed_affect_det",
+			label = "label_cursed_affect_det"
+		})
+
+		form:MakeCheckBox({
+			serverConvar = "ttt2_cursed_damage_immunity",
+			label = "label_cursed_damage_immunity"
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt2_cursed_seconds_until_respawn",
+			label = "label_cursed_seconds_until_respawn",
+			min = 0,
+			max = 120,
+			decimal = 0
+		})
+
+		form:MakeCheckBox({
+			serverConvar = "ttt2_cursed_respawn_at_mapspawn",
+			label = "label_cursed_respawn_at_mapspawn"
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt2_cursed_tag_dist",
+			label = "label_cursed_tag_dist",
+			min = 0,
+			max = 1000,
+			decimal = 0
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt2_cursed_backsies_timer",
+			label = "label_cursed_backsies_timer",
+			min = 0,
+			max = 60,
+			decimal = 0
+		})
+
+		form:MakeCheckBox({
+			serverConvar = "ttt2_cursed_no_dmg_backsies",
+			label = "label_cursed_no_dmg_backsies"
+		})
+
+		form:MakeComboBox({
+			serverConvar = "ttt2_cursed_self_immolate_mode",
+			label = "label_cursed_self_immolate_mode",
+			choices = {{
+				value = 0,
+				title = LANG.GetTranslation("label_cursed_self_immolate_mode_0")
+			},{
+				value = 1,
+				title = LANG.GetTranslation("label_cursed_self_immolate_mode_1")
+			},{
+				value = 2,
+				title = LANG.GetTranslation("label_cursed_self_immolate_mode_2")
+			}}
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt2_cursed_speed_multi",
+			label = "label_cursed_speed_multi",
+			min = 1.0,
+			max = 3.0,
+			decimal = 2
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt2_cursed_stamina_regen",
+			label = "label_cursed_stamina_regen",
+			min = 1.0,
+			max = 3.0,
+			decimal = 2
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt2_cursed_stamina_drain",
+			label = "label_cursed_stamina_drain",
+			min = 0.1,
+			max = 1.0,
+			decimal = 2
+		})
+
+		form:MakeCheckBox({
+			serverConvar = "ttt2_role_swap_deagle_enable",
+			label = "label_role_swap_deagle_enable"
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt2_role_swap_deagle_refill_time",
+			label = "label_role_swap_deagle_refill_time",
+			min = 1,
+			max = 120,
+			decimal = 0
+		})
+	end
+
 end
 
 ------------
